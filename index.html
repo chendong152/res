@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="cache-control" content="no-cache"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <link href="css/main.css" rel="stylesheet"/>
+    <link href="css/swiper3.1.0.min.css" rel="stylesheet"/>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/swiper3.1.0.jquery.min.js"></script>
+    <script type="text/javascript" src="js/util.js"></script>
+    <script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp&key=ZCZBZ-TSO34-EJ5UK-XWOR6-SV4ZV-RQBDB"></script>
+    <script charset="utf-8"
+            src="http://map.qq.com/api/js?v=2.exp&key=ZCZBZ-TSO34-EJ5UK-XWOR6-SV4ZV-RQBDB&libraries=drawing,geometry,autocomplete,convertor"></script>
+    <script type="text/javascript" src="js/bh.js"></script>
+    <script type="text/javascript" src="js/b.js"></script>
+    <title>天下美食</title>
+</head>
+<body>
+<header>
+    <div class="holder"></div>
+    <span class="city">[北京]
+    </span>
+
+    <div class="citys">
+        <span class="ct" data-id="1">北京</span>
+        <span class="ct" data-id="2">上海</span>
+        <span class="ct" data-id="3">深圳</span>
+        <span class="ct" data-id="4">广州</span>
+    </div>
+    <input class="search" placeholder="输入商户名、地点"/>
+    <span class="sort">
+        <ul>
+            <li data-key="dis">离我最近</li>
+            <li data-key="dis" data-desc="true">价格最高</li>
+            <li data-key="dis">价格最低</li>
+        </ul>
+    </span>
+    <script type="text/javascript">
+        $(".sort").click(function () {$(this).toggleClass('show')});
+        $(".city").click(function () {$('.citys').toggle(200);});
+        $(".citys").delegate('.ct', 'click', function () {
+            $('.city').text('[' + $(this).text() + ']'), $(".citys").hide();
+            window.cityChange && fire('cityChange', $(this).data('id'));
+        });
+        $(".search").keydown(function (e) {
+            if (e.which == 13) {sdk.search($(this).blur().val())}
+        })
+    </script>
+    <style>
+        header .holder { height: .8em; }
+        .city { color: white; margin-left: .5em; padding-right: 1em; background: url("img/l.png") right center no-repeat; background-size: auto 1em; }
+        .citys { position: fixed; top: 2.5em; width: 15em; padding: .5em; display: none; }
+        .citys .ct { float: left; padding: .2em; }
+        .citys .ct:last-of-type::after { content: " "; clear: both; }
+        .search { margin-left: .5em;
+            width: 50%;
+            box-sizing: border-box;
+            background-color: #800000;
+            padding-left: 2.5em;
+            background-image: url(img/search.png); background-position: 1em center; background-repeat: no-repeat;
+            background-size: 1.2em;
+            border-radius: 3px; border: none;;
+        }
+        .sort { color: white; float: right; margin-top: .3em; line-height: 1em; height: 1em; overflow: hidden;; vertical-align: bottom; font-size: .8em; width: 4.5em; padding-right: 1.5em; background: url("img/arr-down.png") 82% center no-repeat; background-size: auto 0.5em; }
+        .sort.show { overflow: visible; position: fixed; z-index: 100; right: .1em; top: 1em; }
+        .sort ul { list-style: none; margin: 0; padding: 0; }
+        .sort.show ul { background-color: #800000; padding: .2em; }
+        .sort ul li { margin-bottom: .4em; }
+    </style>
+</header>
+<div class="main">
+    <div class="header-holder"></div>
+    <div id="s1" class="swiper-container">
+        <div class="swiper-pagination" style="top: 0; bottom: auto;"></div>
+        <div class="swiper-wrapper" style=" top: 4%; height: 96%;">
+            <div class="swiper-slide rets">
+                <ul class="list">
+                    <li class="item">
+                        <img class="thumb" src="{titlePic}"/>
+
+                        <div class="mask"></div>
+                        <div class="distance fr pt">{distance}</div>
+                        <div class="title pr pt">{title}</div>
+                        <div class="intro pr">{intro}</div>
+                        <div class="price fr">￥<span class="digit">123</span>/人</div>
+                    </li>
+                    <li class="item">
+                        <img class="thumb" src="img/thumb.png"/>
+
+                        <div class="distance fr pt">10wcjf</div>
+                        <div class="title pr pt">这是一个资本苯枯基酝基</div>
+                        <div class="intro pr">基本原理 基本原理 基本原理 苯苯基本原理 基本原理</div>
+                        <div class="price fr">$123/人</div>
+                    </li>
+                    <li class="item">
+                        <img class="thumb" src="img/thumb.png"/>
+
+                        <div class="distance fr pt">10wcjf</div>
+                        <div class="title pr pt">这是一个资本苯枯基酝基</div>
+                        <div class="intro pr">基本原理 基本原理 基本原理 苯苯基本原理 基本原理</div>
+                        <div class="price fr">$123/人</div>
+                    </li>
+                    <li class="item">
+                        <img class="thumb" src="img/thumb.png"/>
+
+                        <div class="distance fr pt">10wcjf</div>
+                        <div class="title pr pt">这是一个资本苯枯基酝基</div>
+                        <div class="intro pr">基本原理 基本原理 基本原理 苯苯基本原理 基本原理</div>
+                        <div class="price fr">$123/人</div>
+                    </li>
+                    <li class="item">
+                        <img class="thumb" src="img/thumb.png"/>
+
+                        <div class="distance fr pt">10wcjf</div>
+                        <div class="title pr pt">这是一个资本苯枯基酝基</div>
+                        <div class="intro pr">基本原理 基本原理 基本原理 苯苯基本原理 基本原理</div>
+                        <div class="price fr">$123/人</div>
+                    </li>
+                </ul>
+                <div id="mapc" class="map s2">
+                    <div class="to-my-loc" onclick="getLocation()"></div>
+                    <div class="small btn bg" onclick="changeState($('#mapc').hasClass('min')? '':'s2')">
+                        缩小
+                    </div>
+                    <div class="my-loc mask">
+                        <img src="img/map.png"/>
+                        <span class="arrow fr" onclick="changeState('min')">&lt;</span>
+                        <a class="fr btn bg" onclick="changeState('')">地图</a>
+                        <script>
+                            function changeState(s) {
+                                $('#mapc >.small').text(s == 'min' ? '地图' : '缩小')
+                                $("#mapc").removeClass("s2").removeClass("min").addClass(s);
+                            }
+                        </script>
+                    </div>
+                    <div id="map-container" class="wrapper"></div>
+                    <label class="d my-addr mask">当前：北京北京朝阳广渠路16D，吐靠大厦</label>
+                    <script type="text/javascript">
+                        $("#mapc .wrapper").bind("touchstart", function (e) {
+                            e.stopPropagation();
+                            return false;
+                        });
+                        map = new qq.maps.Map(document.getElementById("map-container"), {
+                            center: new qq.maps.LatLng(39.914850, 116.403765),
+                            zoom: 13, zoomControl: false, mapTypeControl: false,
+                            draggable: true, scrollwheel: true, disableDoubleClickZoom: false,
+                        });
+                        $(function () {
+                            getLocation();
+                        });
+                    </script>
+                </div>
+
+            </div>
+            <div class="swiper-slide news">
+                <ul class="list">
+                    <li>
+                        <a href="{uRL}">
+                            <img class="thumb" src="img/demo.png"/>
+
+                            <span class="title">{title}</span>
+                            <span class="time">2015-8-30</span>
+                            <span class="count">120</span>
+
+                            <div class="clear"></div>
+                        </a>
+                    </li>
+                </ul>
+                <style>
+                    .news a, .news a:active, .news a:visited { color: black; }
+                    .news .list { list-style: none; margin: 0; padding: 0; width: 100%; overflow-y: auto; height: 100%; }
+                    .news .list li { background: url("img/bg.png") center bottom no-repeat; background-size: 100% auto; padding: 1em 0; }
+                    .news .list li:first-child { padding-top: 0; }
+                    .news .list li .thumb { width: 100%; }
+                    .news .list li .title { margin-left: 1em; width: 70%; float: left; }
+                    .news .list li .time { margin-right: 1em; float: right; }
+                    .news .list li .count { margin-right: 1em; padding-left: 1.5em; background: url("img/m.png") left center no-repeat; -webkit-background-size: 1.3em; background-size: 1.3em; float: right; }
+                    .swiper-pagination-bullet { width: 6px; height: 6px; border: 2px solid red; background-color: white; }
+                    .swiper-pagination-bullet-active { top: -1px;
+                        background-color: red; border-color: white; width: 4px; height: 4px; position: relative;
+                    }
+                    .swiper-pagination-bullet-active::after { content: " "; width: 10px; height: 10px; background: red; border-radius: 100%;
+                        position: absolute; left: -3px; top: -3px; z-index: -1; }
+                </style>
+            </div>
+        </div>
+        <script type="text/javascript">
+            s1 = new Swiper('#s1', {direction: 'horizontal', loop: false, pagination: '.swiper-pagination'});
+        </script>
+    </div>
+</div>
+</body>
+</html>
