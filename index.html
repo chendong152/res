@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="cache-control" content="no-cache"/>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
     <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
     <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
     <link href="css/main.css" rel="stylesheet"/>
     <link href="css/swiper3.1.0.min.css" rel="stylesheet"/>
@@ -14,7 +15,9 @@
     <script charset="utf-8"
             src="http://map.qq.com/api/js?v=2.exp&key=ZCZBZ-TSO34-EJ5UK-XWOR6-SV4ZV-RQBDB&libraries=drawing,geometry,autocomplete,convertor"></script>
     <script type="text/javascript" src="js/bh.js"></script>
+    <script type="text/javascript" src="js/c.js"></script>
     <script type="text/javascript" src="js/b.js"></script>
+    <base target="detail"/>
     <title>天下美食</title>
 </head>
 <body>
@@ -24,28 +27,37 @@
     </span>
 
     <div class="citys">
-        <span class="ct" data-id="1">北京</span>
+        <span class="ct" data-id="{areaId}">{name}</span>
         <span class="ct" data-id="2">上海</span>
         <span class="ct" data-id="3">深圳</span>
         <span class="ct" data-id="4">广州</span>
     </div>
     <input class="search" placeholder="输入商户名、地点"/>
     <span class="sort">
+        <span>离我最近</span>
         <ul>
-            <li data-key="dis">离我最近</li>
-            <li data-key="dis" data-desc="true">价格最高</li>
-            <li data-key="dis">价格最低</li>
+            <li class="active" data-key="dis">离我最近</li>
+            <li data-key="price" data-desc="true">价格最高</li>
+            <li data-key="price">价格最低</li>
         </ul>
     </span>
     <script type="text/javascript">
-        $(".sort").click(function () {$(this).toggleClass('show')});
+        $(".sort").click(function (e) {
+            $(this).toggleClass('show');
+            var t = $(e.target);
+            if (e.target.tagName == "LI" && !t.hasClass("active")) {
+                console.log(e)
+                $(this).find('span').text(t.text()).end().find('>ul>li').removeClass('active');
+                $(this).data('key', t.addClass('active').data('key')), sdk.sort(t.data('key'), t.data('desc'));
+            }
+        });
         $(".city").click(function () {$('.citys').toggle(200);});
         $(".citys").delegate('.ct', 'click', function () {
             $('.city').text('[' + $(this).text() + ']'), $(".citys").hide();
-            window.cityChange && fire('cityChange', $(this).data('id'));
+            fire('cityChange', $(this).data('id'));
         });
         $(".search").keydown(function (e) {
-            if (e.which == 13) {sdk.search($(this).blur().val())}
+            if (e.which == 13) {sdk[s1.activeIndex == 0 ? 'search' : 'searchNews']($(this).blur().val()), changeState('s2');}
         })
     </script>
     <style>
@@ -65,9 +77,11 @@
         }
         .sort { color: white; float: right; margin-top: .3em; line-height: 1em; height: 1em; overflow: hidden;; vertical-align: bottom; font-size: .8em; width: 4.5em; padding-right: 1.5em; background: url("img/arr-down.png") 82% center no-repeat; background-size: auto 0.5em; }
         .sort.show { overflow: visible; position: fixed; z-index: 100; right: .1em; top: 1em; }
-        .sort ul { list-style: none; margin: 0; padding: 0; }
-        .sort.show ul { background-color: #800000; padding: .2em; }
+        .sort ul { list-style: none; margin: 0; padding: 0; display: none; }
+        .sort.show ul { background-color: #800000; padding: .2em; display: block; }
+        .sort.show > span { display: none; }
         .sort ul li { margin-bottom: .4em; }
+        .sort ul li.active { color: gray; }
     </style>
 </header>
 <div class="main">
@@ -84,39 +98,7 @@
                         <div class="distance fr pt">{distance}</div>
                         <div class="title pr pt">{title}</div>
                         <div class="intro pr">{intro}</div>
-                        <div class="price fr">￥<span class="digit">123</span>/人</div>
-                    </li>
-                    <li class="item">
-                        <img class="thumb" src="img/thumb.png"/>
-
-                        <div class="distance fr pt">10wcjf</div>
-                        <div class="title pr pt">这是一个资本苯枯基酝基</div>
-                        <div class="intro pr">基本原理 基本原理 基本原理 苯苯基本原理 基本原理</div>
-                        <div class="price fr">$123/人</div>
-                    </li>
-                    <li class="item">
-                        <img class="thumb" src="img/thumb.png"/>
-
-                        <div class="distance fr pt">10wcjf</div>
-                        <div class="title pr pt">这是一个资本苯枯基酝基</div>
-                        <div class="intro pr">基本原理 基本原理 基本原理 苯苯基本原理 基本原理</div>
-                        <div class="price fr">$123/人</div>
-                    </li>
-                    <li class="item">
-                        <img class="thumb" src="img/thumb.png"/>
-
-                        <div class="distance fr pt">10wcjf</div>
-                        <div class="title pr pt">这是一个资本苯枯基酝基</div>
-                        <div class="intro pr">基本原理 基本原理 基本原理 苯苯基本原理 基本原理</div>
-                        <div class="price fr">$123/人</div>
-                    </li>
-                    <li class="item">
-                        <img class="thumb" src="img/thumb.png"/>
-
-                        <div class="distance fr pt">10wcjf</div>
-                        <div class="title pr pt">这是一个资本苯枯基酝基</div>
-                        <div class="intro pr">基本原理 基本原理 基本原理 苯苯基本原理 基本原理</div>
-                        <div class="price fr">$123/人</div>
+                        <div class="price fr">￥<span class="digit">{price}</span>/人</div>
                     </li>
                 </ul>
                 <div id="mapc" class="map s2">
@@ -187,9 +169,35 @@
             </div>
         </div>
         <script type="text/javascript">
-            s1 = new Swiper('#s1', {direction: 'horizontal', loop: false, pagination: '.swiper-pagination'});
+            s1 = new Swiper('#s1', {
+                direction: 'horizontal', loop: false, pagination: '.swiper-pagination',
+                onSlideChangeEnd: function (swiper) {
+                    var arr = ['输入商户名、地点', '输入关键字搜索'];
+                    $('.search').attr('placeholder', arr[swiper.activeIndex]).val('');
+                }
+            });
         </script>
     </div>
+</div>
+
+<div class="ic">
+    <iframe id="detail" name="detail">
+    </iframe>
+    <div class="frm-tool">
+        <a class="btn">返回</a>
+    </div>
+    <script type="text/javascript">
+        $('.frm-tool').click(function () {
+            //$("#detail").removeClass('show');
+           // $('.frm-tool').hide();
+            $(".ic").hide();
+        });
+        $("#detail").load(function () {
+           // $('.frm-tool').show();
+           // $(this).addClass('show').show(100);
+            $(".ic").toggle();
+        });
+    </script>
 </div>
 </body>
 </html>

@@ -6,10 +6,8 @@
  * Time: 16:31
  */
 header('Content-Type:application/json;charset=utf-8');
-if (isset($_GET['b']))
-    b();
-else
-    a();
+$m = isset($_GET['m']) ? $_GET['m'] : 'a';
+$m();
 
 function a() {
     echo '{
@@ -73,7 +71,8 @@ function b() {
         "taste": 4.5,
         "tel": "010-52086061",
         "title": "米家思Migas Restaurant",
-        "titlePic": "img/thumb.png"
+        "titlePic": "img/thumb.png",
+        "price":13
     },
     {
         "address": "北京市朝阳区三里屯北街81号那里花园6楼",
@@ -92,7 +91,77 @@ function b() {
         "taste": 4.5,
         "tel": "010-52086138",
         "title": "Fez Bar",
-        "titlePic": "img/thumb.png"
+        "titlePic": "img/thumb.png",
+        "price":1
+    },
+    {
+        "address": "北京市朝阳区三里屯北街81号那里花园6楼",
+        "distance": 10,
+        "intro": "裙角飞扬的夏天正是放松享乐的好时机。如果不能在烈日下肆意玩耍，倒不如入夜之后逃出封闭的空调房，来到顶楼露台乘着夏夜的晚风，一边享受味觉的美，一边体会视觉的醉。",
+        "service": 4.5,
+        "surroundings": 4.5,
+        "tagList": [
+            "三里屯",
+            "酒吧",
+            "露台",
+            "休闲",
+            "情侣",
+            "鸡尾酒"
+        ],
+        "taste": 4.5,
+        "tel": "010-52086138",
+        "title": "Fez Bar",
+        "titlePic": "img/thumb.png",
+        "price":1
+    },
+    {
+        "address": "北京市朝阳区三里屯北街81号那里花园6楼",
+        "distance": 20,
+        "intro": "裙角飞扬的夏天正是放松享乐的好时机。如果不能在烈日下肆意玩耍，倒不如入夜之后逃出封闭的空调房，来到顶楼露台乘着夏夜的晚风，一边享受味觉的美，一边体会视觉的醉。",
+        "service": 4.5,
+        "surroundings": 4.5,
+        "tagList": [
+            "三里屯",
+            "酒吧",
+            "露台",
+            "休闲",
+            "情侣",
+            "鸡尾酒"
+        ],
+        "taste": 4.5,
+        "tel": "010-52086138",
+        "title": "Fez Bar",
+        "titlePic": "img/thumb.png",
+        "price":11
+    }
+]';
+}
+
+function c(){
+    echo '[
+    {
+        "areaId": 110100,
+        "name": "北京市"
+    },
+    {
+        "areaId": 120100,
+        "name": "天津市"
+    },
+    {
+        "areaId": 130100,
+        "name": "石家庄市"
+    },
+    {
+        "areaId": 130200,
+        "name": "唐山市"
+    },
+    {
+        "areaId": 130300,
+        "name": "秦皇岛市"
+    },
+    {
+        "areaId": 130400,
+        "name": "邯郸市"
     }
 ]';
 }
