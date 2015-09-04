@@ -56,12 +56,12 @@
         $(".citys").delegate('.ct', 'click', function () {
             $(".citys").hide();
             if ($('.city').data('id') == $(this).data('id')) return;
-            $('.city').data('id',$(this).data('id')).text('[' + $(this).text().replace(/市$/, '') + ']'), fire('cityChange', $(this).data('id'));
+            $('.city').data('id', myCityId = $(this).data('id')).text('[' + $(this).text().replace(/市$/, '') + ']'), fire('cityChange', $(this).data('id'));
+            $(".search").val('');
         });
         $(".search").keydown(function (e) {
-            console.log(e.which, e.keyCode)
             if (e.which == 13) {
-                sdk[s1.activeIndex == 0 ? 'search' : 'searchNews']($(this).blur().val()), changeState('s2'),$(".news .list").scrollTop(0);
+                sdk[s1.activeIndex == 0 ? 'search' : 'searchNews']($(this).blur().val()), changeState('s2'), $(".news .list").scrollTop(0);
             }
         })
     </script>
@@ -108,7 +108,7 @@
                         });
                         map = new qq.maps.Map(document.getElementById("map-container"), {
                             center: new qq.maps.LatLng(39.914850, 116.403765),
-                            zoom: 13, zoomControl: false, mapTypeControl: false,
+                            zoom: 13, zoomControl: false, mapTypeControl: false, scaleControl: false, panControl: false,
                             draggable: true, scrollwheel: true, disableDoubleClickZoom: false,
                         });
                         $(function () {
@@ -116,7 +116,7 @@
                                 ($("#resAssis").length > 0 ? $("#resAssis") : $("<a id='resAssis' style='display:none;'>").appendTo($(document.body)))
                                         .attr("href", $(this).attr("href"))[0].click();
                             })
-                            $('.swiper-container').height($(window).height()-$('header').height());
+                            $('.swiper-container').height($(window).height() - $('header').height());
                         });
                     </script>
                 </div>

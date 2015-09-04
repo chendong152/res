@@ -21,20 +21,24 @@ Controller.prototype.showRes = function (ls) {
     p[0].appendChild(frag);
     return this;
 }
-Controller.prototype.getRes = function (p) {
+Controller.prototype.getRes = function (p, kw) {
     var self = this, isLoc = p instanceof (qq.maps.LatLng),
-        url = isLoc
+        url = kw
+            ? 'http://114.215.174.204:8080/xunwei/main?InterfaceId=ShopAction&MethodId=queryByTitleLike'
+            : (isLoc
             ? 'http://114.215.174.204:8080/xunwei/main?InterfaceId=ShopAction&MethodId=queryByLatLon'
-            : 'http://114.215.174.204:8080/xunwei/main?InterfaceId=ShopAction&MethodId=queryByCityIdAndPosition';
-    $.getJSON(url, isLoc ? {Lat: p.lat, Lon: p.lng, Distance: 3} : {CityId: p}, function (d) {
+            : 'http://114.215.174.204:8080/xunwei/main?InterfaceId=ShopAction&MethodId=queryByCityIdAndPosition'),
+        d = kw ? {TitleLike: kw, CityId: p} : isLoc ? {Lat: p.lat, Lon: p.lng, Distance: 3} : {CityId: p};
+    $.getJSON(url, d, function (d) {
         d = d || [], self.resClone = d, self.showRes(d);
     });
     return this;
 };
 Controller.prototype.search = function (key) {
-    return this.showRes(!key ? this.resClone : this.resClone.filter(function (res) {
-        return new RegExp(key, 'ig').test(res.title) || new RegExp(key, 'ig').test(res.address)
-    }));
+    /*return this.showRes(!key ? this.resClone : this.resClone.filter(function (res) {
+     return new RegExp(key, 'ig').test(res.title) || new RegExp(key, 'ig').test(res.address)
+     }));*/
+    return this.getRes(key || !window.myLocMark ? myCityId : myLocMark.position, key);
 };
 Controller.prototype.sort = function (t, desc) {
     console.log(t, desc)
@@ -86,8 +90,9 @@ Controller.prototype.loadCity = function () {
 Controller.prototype.toMyCity = function (ct) {
     if (!this.cities || !me.city)return this;
     this.cities.forEach(function (c) {
+        console.log(c)
         if (c.name.match(new RegExp(ct || me.city.name, 'ig')))
-            $('header .city').data('id', c.id).text('[' + c.name.replace(/.$/, '') + ']')
+            $('header .city').data('id', myCityId = c.areaId).text('[' + c.name.replace(/.$/, '') + ']')
     })
     return this;
 };

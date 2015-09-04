@@ -60,9 +60,9 @@ $(function () {
     });
     getLocation();
     var cs = new qq.maps.CityService();
-    cs.setComplete(function (r) {console.log(r)
-        me.city = r.detail;
-        sdk.toMyCity(me.city.name) && fire('locChange',me.city.latLng);
+    cs.setComplete(function (r) {
+        me.city = $.extend(me.city, r.detail);
+        sdk.toMyCity(me.city.name) && fire('locChange', me.city.latLng);
     });
     cs.searchLocalCity();
 })
