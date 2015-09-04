@@ -6,7 +6,7 @@ function CustomOverlay(position, index) {
     this.position = position;
 }
 CustomOverlay.prototype = new qq.maps.Overlay();
-//¶¨Òåconstruct,ÊµÏÖÕâ¸ö½Ó¿ÚÀ´³õÊ¼»¯×Ô¶¨ÒåµÄDomÔªËØ
+//å®šä¹‰construct,å®ç°è¿™ä¸ªæ¥å£æ¥åˆå§‹åŒ–è‡ªå®šä¹‰çš„Domå…ƒç´ 
 CustomOverlay.prototype.construct = function () {
     var div = this.div = document.createElement("div");
     var divStyle = this.div.style;
@@ -20,9 +20,9 @@ CustomOverlay.prototype.construct = function () {
     divStyle.borderRadius = "1em";
     divStyle.cursor = "pointer";
     this.div.innerHTML = this.index;
-    //½«domÌí¼Óµ½¸²¸ÇÎï²ã
+    //å°†domæ·»åŠ åˆ°è¦†ç›–ç‰©å±‚
     var panes = this.getPanes();
-    //ÉèÖÃpanesµÄ²ã¼¶£¬overlayMouseTarget¿É½ÓÊÕµã»÷ÊÂ¼ş
+    //è®¾ç½®panesçš„å±‚çº§ï¼ŒoverlayMouseTargetå¯æ¥æ”¶ç‚¹å‡»äº‹ä»¶
     panes.overlayMouseTarget.appendChild(div);
 
     var self = this;
@@ -30,16 +30,16 @@ CustomOverlay.prototype.construct = function () {
         alert(self.index);
     }
 }
-//ÊµÏÖdraw½Ó¿ÚÀ´»æÖÆºÍ¸üĞÂ×Ô¶¨ÒåµÄdomÔªËØ
+//å®ç°drawæ¥å£æ¥ç»˜åˆ¶å’Œæ›´æ–°è‡ªå®šä¹‰çš„domå…ƒç´ 
 CustomOverlay.prototype.draw = function () {
     var overlayProjection = this.getProjection();
-    //·µ»Ø¸²¸ÇÎïÈİÆ÷µÄÏà¶ÔÏñËØ×ø±ê
+    //è¿”å›è¦†ç›–ç‰©å®¹å™¨çš„ç›¸å¯¹åƒç´ åæ ‡
     var pixel = overlayProjection.fromLatLngToDivPixel(this.position);
     var divStyle = this.div.style;
     divStyle.left = pixel.x - 8 + "px";
     divStyle.top = pixel.y - 8 + "px";
 }
-//ÊµÏÖdestroy½Ó¿ÚÀ´É¾³ı×Ô¶¨ÒåµÄDomÔªËØ£¬´Ë·½·¨»áÔÚsetMap(null)ºó±»µ÷ÓÃ
+//å®ç°destroyæ¥å£æ¥åˆ é™¤è‡ªå®šä¹‰çš„Domå…ƒç´ ï¼Œæ­¤æ–¹æ³•ä¼šåœ¨setMap(null)åè¢«è°ƒç”¨
 CustomOverlay.prototype.destroy = function () {
     this.div.onclick = null;
     this.div.parentNode.removeChild(this.div);
@@ -49,10 +49,10 @@ CustomOverlay.prototype.destroy = function () {
 
 function getAddr(latLng, cb) {
     var geocoder = new qq.maps.Geocoder({complete: cb || function () {}});
-    //¶ÔÖ¸¶¨¾­Î³¶È½øĞĞ½âÎö
+    //å¯¹æŒ‡å®šç»çº¬åº¦è¿›è¡Œè§£æ
     geocoder.getAddress(latLng);
-    //Èô·şÎñÇëÇóÊ§°Ü£¬ÔòÔËĞĞÒÔÏÂº¯Êı
+    //è‹¥æœåŠ¡è¯·æ±‚å¤±è´¥ï¼Œåˆ™è¿è¡Œä»¥ä¸‹å‡½æ•°
     geocoder.setError(function () {
-        alert("³ö´íÁË£¬ÇëÊäÈëÕıÈ·µÄ¾­Î³¶È£¡£¡£¡");
+        alert("å‡ºé”™äº†ï¼Œè¯·è¾“å…¥æ­£ç¡®çš„ç»çº¬åº¦ï¼ï¼ï¼");
     });
 }

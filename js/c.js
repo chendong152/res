@@ -3,7 +3,9 @@
  */
 
 function Controller() {
-    this.res = [], this.resClone = [], this.fn = function () {};
+    this.res = [], this.resClone = [], this.fn = function (s1, s2) {
+        return s1.distance - s2.distance;
+    };
     this.init();
 }
 
@@ -12,64 +14,88 @@ Controller.prototype.showRes = function (ls) {
     var li = this.resTmpl = this.resTmpl || $('.rets .list>li:first').prop('outerHTML'), p = $('.rets .list').empty(),
         frag = document.createDocumentFragment();
     for (var i = 0; i < ls.length || 0; i++) {
+        ls[i].spend = parseFloat(ls[i].spend).toFixed(0);
+        ls[i].distance = parseFloat(ls[i].distance).toFixed(2);
         $(replace(li, ls[i])).appendTo($(frag));
     }
     p[0].appendChild(frag);
     return this;
 }
 Controller.prototype.getRes = function (p) {
-    var self = this,
-        url = 'http://114.215.174.204:8080/xunwei/main?InterfaceId=ShopAction&MethodId=queryByLatLon&Lat=' + p.lat + '&Lon=' + p.lng + '&Distance=0.5';
-    url = 'a.php?m=b';
-    $.getJSON(url, function (d) {self.resClone = d, self.showRes(d)});
+    var self = this, isLoc = p instanceof (qq.maps.LatLng),
+        url = isLoc
+            ? 'http://114.215.174.204:8080/xunwei/main?InterfaceId=ShopAction&MethodId=queryByLatLon'
+            : 'http://114.215.174.204:8080/xunwei/main?InterfaceId=ShopAction&MethodId=queryByCityIdAndPosition';
+    $.getJSON(url, isLoc ? {Lat: p.lat, Lon: p.lng, Distance: 3} : {CityId: p}, function (d) {
+        d = d || [], self.resClone = d, self.showRes(d);
+    });
     return this;
 };
 Controller.prototype.search = function (key) {
-    return this.showRes(!key ? this.resClone : this.resClone.filter(function (res) {return new RegExp(key, 'ig').test(res.title) || new RegExp(key, 'ig').test(res.address)}));
+    return this.showRes(!key ? this.resClone : this.resClone.filter(function (res) {
+        return new RegExp(key, 'ig').test(res.title) || new RegExp(key, 'ig').test(res.address)
+    }));
 };
 Controller.prototype.sort = function (t, desc) {
-    var fn = t == 'dis' ? function (s1, s2) {return s1.distance - s2.distance;} : function (s1, s2) {return s1.price - s2.price;};
+    console.log(t, desc)
+    var fn = t == 'dis' ? this.fn : function (s1, s2) {
+        return s1.spend - s2.spend;
+    };
     if (desc) {
         var _fn = fn;
-        fn = function (s1, s2) {return -_fn(s1, s2);}
+        fn = function (s1, s2) {
+            return -_fn(s1, s2);
+        }
     }
-    this.fn = fn;
-    return this.showRes();
+    return this.fn = fn , this.showRes();
 }
-Controller.prototype.loadNews = function (reload) {
-    if (this.complete) return;
-    var size = 20, start = this.start = reload ? 0 : ( this.start || 0), self = this;
-    var url = 'http://114.215.174.204:8080/xunwei/main?InterfaceId=WeixinNewsAction&MethodId=queryAllNews';
-    url = 'a.php';
-    $.getJSON(url, {
-        offset: start, limit: size
+Controller.prototype.loadNews = function (reload, kw) {
+    if (this.newsLoading || (this.complete && !reload)) return this;
+    var size = 20, start = this.start = reload ? 0 : ( this.start || 0), self = this,
+        url = 'http://114.215.174.204:8080/xunwei/main?InterfaceId=WeixinNewsAction';
+    this.newsLoading = true , $.getJSON(url, {
+        MethodId: kw ? 'queryNewsByTitleLike' : 'queryAllNews', offset: start, limit: size, TitleLike: kw
     }, function (data) {
         var li = self.newsTmpl = self.newsTmpl || $(".news .list>li:first").prop('outerHTML'), p = $(".news .list");
         self.complete = true;
         if (reload) p.empty();
+        if (!data) return;
         for (var i = 0; i < data.items.length; i++)
-            $(replace(li, data.items[i])).appendTo(p);
+            data.items[i].creatDate = data.items[i].creatDate.substr(0, 10), $(replace(li, data.items[i])).appendTo(p);
         if (data.total > self.start + size) {
-            self.start += size;
-            self.complete = false;
+            self.start += size, self.complete = false;
         }
-    })
+        self.newsLoading = false
+    });
     return this;
 };
-Controller.prototype.searchNews = function (key) {alert('news search')
-    return this;
+Controller.prototype.searchNews = function (key) {
+    return this.loadNews(true, key);
 };
 Controller.prototype.loadCity = function () {
-    var cts = [], p = $("header .citys"), tmpl = self.ctTmpl = self.ctTmpl || p.find(">.ct:first").prop('outerHTML'),
-        url = "a.php?m=c";
+    var self = this, p = $("header .citys"), tmpl = self.ctTmpl = self.ctTmpl || p.find(">.ct:first").prop('outerHTML'),
+        url = "http://114.215.174.204:8080/xunwei/main?InterfaceId=AreaAction&MethodId=queryAllCity";
     $.getJSON(url, function (r) {
-        p.empty(), r.forEach(function (d, i) {p.append($(replace(tmpl, d)))}), $('header .city').text('[' + r[0].name.replace(/.$/, '') + ']');
+        p.empty(), (self.cities = r).forEach(function (d, i) {
+            p.append($(replace(tmpl, d)))
+        })//, $('header .city').data('id', r[0].id).text('[' + r[0].name.replace(/.$/, '') + ']');
+        self.toMyCity();
     });
+    return this;
+};
+Controller.prototype.toMyCity = function (ct) {
+    if (!this.cities || !me.city)return this;
+    this.cities.forEach(function (c) {
+        if (c.name.match(new RegExp(ct || me.city.name, 'ig')))
+            $('header .city').data('id', c.id).text('[' + c.name.replace(/.$/, '') + ']')
+    })
     return this;
 };
 Controller.prototype.init = function () {
     var self = this;
-    window.locChange = function (p) {self.getRes(p);};
+    window.locChange = function (p) {
+        self.getRes(p);
+    };
     window.cityChange = function (city) {
         self.getRes(city);
     };
@@ -78,7 +104,7 @@ Controller.prototype.init = function () {
             if (this.scrollHeight - $(this).height() - this.scrollTop < 100)
                 self.loadNews();
         })
-        self.loadNews(true).loadCity();
+        self.loadCity().loadNews(true);
     });
     return self;
 }
