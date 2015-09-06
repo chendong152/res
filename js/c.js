@@ -22,13 +22,15 @@ Controller.prototype.showRes = function (ls) {
     return this;
 }
 Controller.prototype.getRes = function (p, kw) {
-    var self = this, isLoc = p instanceof (qq.maps.LatLng),
+    var self = this, isLoc = p instanceof (qq.maps.LatLng), myPos = window.myLoc || {},
         url = kw
             ? 'http://114.215.174.204:8080/xunwei/main?InterfaceId=ShopAction&MethodId=queryByTitleLike'
             : (isLoc
             ? 'http://114.215.174.204:8080/xunwei/main?InterfaceId=ShopAction&MethodId=queryByLatLon'
             : 'http://114.215.174.204:8080/xunwei/main?InterfaceId=ShopAction&MethodId=queryByCityIdAndPosition'),
-        d = kw ? {TitleLike: kw, CityId: p} : isLoc ? {Lat: p.lat, Lon: p.lng, Distance: 3} : {CityId: p};
+        d = kw
+            ? {TitleLike: kw, CityId: p, Lat: myPos.lat, Lon: myPos.lng}
+            : isLoc ? {Lat: p.lat, Lon: p.lng, Distance: 3} : {CityId: p};
     $.getJSON(url, d, function (d) {
         d = d || [], self.resClone = d, self.showRes(d);
     });
@@ -41,7 +43,6 @@ Controller.prototype.search = function (key) {
     return this.getRes(key || !window.myLocMark ? myCityId : myLocMark.position, key);
 };
 Controller.prototype.sort = function (t, desc) {
-    console.log(t, desc)
     var fn = t == 'dis' ? this.fn : function (s1, s2) {
         return s1.spend - s2.spend;
     };
@@ -69,7 +70,7 @@ Controller.prototype.loadNews = function (reload, kw) {
         if (data.total > self.start + size) {
             self.start += size, self.complete = false;
         }
-        self.newsLoading = false
+        self.newsLoading = false;
     });
     return this;
 };
@@ -82,7 +83,7 @@ Controller.prototype.loadCity = function () {
     $.getJSON(url, function (r) {
         p.empty(), (self.cities = r).forEach(function (d, i) {
             p.append($(replace(tmpl, d)))
-        })//, $('header .city').data('id', r[0].id).text('[' + r[0].name.replace(/.$/, '') + ']');
+        });//, $('header .city').data('id', r[0].id).text('[' + r[0].name.replace(/.$/, '') + ']');
         self.toMyCity();
     });
     return this;
@@ -90,7 +91,6 @@ Controller.prototype.loadCity = function () {
 Controller.prototype.toMyCity = function (ct) {
     if (!this.cities || !me.city)return this;
     this.cities.forEach(function (c) {
-        console.log(c)
         if (c.name.match(new RegExp(ct || me.city.name, 'ig')))
             $('header .city').data('id', myCityId = c.areaId).text('[' + c.name.replace(/.$/, '') + ']')
     })
@@ -102,13 +102,14 @@ Controller.prototype.init = function () {
         self.getRes(p);
     };
     window.cityChange = function (city) {
+        console.log(city)
         self.getRes(city);
     };
     $(function () {
         $(".news .list").scroll(function () {
             if (this.scrollHeight - $(this).height() - this.scrollTop < 100)
                 self.loadNews();
-        })
+        });
         self.loadCity().loadNews(true);
     });
     return self;

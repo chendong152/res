@@ -45,10 +45,10 @@ header .holder { height: .8em; }
 .main .rets .list > li { width: 100%; padding: 0; margin: 0; list-style: none; overflow: hidden; background: url("../img/bg.png") 0 100% no-repeat; background-size: 100% auto; }
 .main .rets .list > li .pr { padding-right: 6em; }
 .main .rets .list > li .pt { margin-top: 1em; }
-.main .rets .list > li  .thumb { width: 25%; margin: .5em 1em 1em 1em; float: left; min-height: 5em; }
-.main .rets .list > li  .distance { background: url("../img/l.png") left center no-repeat; background-size: auto 1em; padding-left: .7em; }
+.main .rets .list > li .thumb { width: 25%; margin: .5em 1em 1em 1em; float: left; min-height: 5em; }
+.main .rets .list > li .distance { background: url("../img/l.png") left center no-repeat; background-size: auto 1em; padding-left: .7em; }
 .main .rets .list > li .title { }
-.main .rets .list > li .intro { font-size: .75em; margin-top: 1em; height: 2em; overflow: hidden; text-overflow: ellipsis; }
+.main .rets .list > li .intro { font-size: .75em; margin-top: 1em; height: 2.3em; overflow: hidden; text-overflow: ellipsis; }
 .main .rets .list > li .price { margin-top: -1em; }
 .main .rets .list > li .price .digit { color: #960001; }
 .main .rets .list > li .fr { margin-right: 1em }
@@ -56,25 +56,27 @@ header .holder { height: .8em; }
 .main .rets .list > li:first-child { height: 40%; position: relative; background: none; }
 .main .rets .list > li:first-child > * { color: white; position: absolute; bottom: 0%; line-height: 2em; height: 2em; white-space: nowrap; text-overflow: ellipsis; text-align: center; overflow: hidden; }
 .main .rets .list > li:first-child > .mask { height: 2em; width: 100%; background: grey; opacity: .5; }
+.main .rets .list > li:first-child > .mask.one { height: 1.2em; }
+.main .rets .list > li:first-child > .mask.two { bottom: 1.3em; }
 .main .rets .list > li:first-child > .thumb { height: 100%; width: 100%; margin: 0% }
-.main .rets .list > li:first-child > .title { width: 28%; left: 0; }
-.main .rets .list > li:first-child > .price { width: 15%; left: 28%; }
+.main .rets .list > li:first-child > .title { width: 50%; left: 0; bottom: 1.3em; }
+.main .rets .list > li:first-child > .price { width: 6em; left: 53%; bottom: 1.3em; }
 .main .rets .list > li:first-child > .price .digit { color: inherit; }
-.main .rets .list > li:first-child > .intro { width: 42%; left: 43%; }
-.main .rets .list > li:first-child > .distance { box-sizing: border-box; width: 15%; text-overflow: clip; right: 0; padding: 0 0 0 1em; margin: 0%; margin-left: .5em; text-align: left; }
-.main .rets .my-loc { width: 100%; height: 3.5em; position: absolute; left: 0; bottom: 0; z-index: 6; text-align: center; opacity: .5; }
+.main .rets .list > li:first-child > .intro { width: 98%; left: 1%; }
+.main .rets .list > li:first-child > .distance { bottom: 1.3em; box-sizing: border-box; width: 5em; text-overflow: clip; right: 0; padding: 0 0 0 1em; margin: 0%; margin-left: .5em; text-align: left; }
+.main .rets .my-loc { width: 100%; height: 3em; position: absolute; left: 0; bottom: 0; z-index: 6; text-align: center; opacity: .95; }
 .main .rets .my-loc img { float: left; width: 18%; margin-top: -.7em; }
 .main .rets .my-loc .d { width: 50%; display: inline-block; line-height: 2.5em; white-space: nowrap;
     overflow: hidden; text-overflow: ellipsis; }
-.main .rets .my-loc .arrow { width: 1em; height: 3.5em; line-height: 3.5em; }
+.main .rets .my-loc .arrow { width: 1em; height: 100%; /* line-height: 3em;*/ }
 .main .rets .my-loc a { height: 1.5em; line-height: 1.5em; margin-right: .5em; margin-top: .6em; color: white; z-index: 100; }
 .main .rets .map { width: 100%; height: 60%; position: absolute; right: 0; bottom: 0; z-index: 5; }
 .main .rets .map > .wrapper { width: 100%; height: 100%; }
 .main .rets .switch { width: 2.2em; height: 1.2em; position: fixed; right: 0.5em; bottom: .5em; z-index: 5; }
 .map { }
 .map .to-my-loc { position: absolute; bottom: 1em; left: 1em; width: 2em; height: 2em; overflow: hidden; border-radius: 1.6em; z-index: 8; background: red; }
-.map .my-addr { position: absolute; line-height: 2em; width: 60%; height: 2em; overflow: hidden; -ms-text-overflow: ellipsis;
-    text-overflow: ellipsis; margin-left: 20%; bottom: 1em; text-align: center;
+.map .my-addr { position: absolute; line-height: 2em; width: 60%; height: 2em; overflow: hidden; z-index: 10; color: blue;
+    -ms-text-overflow: ellipsis; text-overflow: ellipsis; margin-left: 20%; bottom: .5em; text-align: center;
 }
 .map .small { z-index: 2; position: absolute; right: 1em; bottom: 1em; width: 3em; line-height: 1.6em; text-align: center; color: white; }
 .map .my-loc { display: none; z-index: 3; }
