@@ -3,7 +3,7 @@
  */
 
 function Controller() {
-    this.res = [], this.resClone = [], this.fn = function (s1, s2) {
+    this.res = [], this.resClone = [], this._defFn = this.fn = function (s1, s2) {
         return s1.distance - s2.distance;
     };
     this.init();
@@ -11,26 +11,23 @@ function Controller() {
 
 Controller.prototype.showRes = function (ls) {
     this.res = ls = (ls || this.res).sort(this.fn);
-    var li = this.resTmpl = this.resTmpl || $('.rets .list>li:first').prop('outerHTML'), p = $('.rets .list').empty(),
+    var li = this.resTmpl = this.resTmpl || $('.rets .list>script.tmpl').html(), p = $('.rets .list').empty(),
         frag = document.createDocumentFragment();
     for (var i = 0; i < ls.length || 0; i++) {
         ls[i].spend = parseFloat(ls[i].spend).toFixed(0);
-        ls[i].distance = parseFloat(ls[i].distance).toFixed(2);
+        ls[i].distance = parseFloat(ls[i].distance).toFixed(ls[i].distance > 10 ? 0 : 2);
         $(replace(li, ls[i])).appendTo($(frag));
     }
     p[0].appendChild(frag);
     return this;
 }
 Controller.prototype.getRes = function (p, kw) {
-    var self = this, isLoc = p instanceof (qq.maps.LatLng), myPos = window.myLoc || {},
+    var self = this, p = myLocMark.position, isLoc = p instanceof (qq.maps.LatLng), myPos = window.myLoc || {},
         url = kw
             ? 'http://114.215.174.204:8080/xunwei/main?InterfaceId=ShopAction&MethodId=queryByTitleLike'
-            : (isLoc
-            ? 'http://114.215.174.204:8080/xunwei/main?InterfaceId=ShopAction&MethodId=queryByLatLon'
-            : 'http://114.215.174.204:8080/xunwei/main?InterfaceId=ShopAction&MethodId=queryByCityIdAndPosition'),
-        d = kw
-            ? {TitleLike: kw, CityId: p, Lat: myPos.lat, Lon: myPos.lng}
-            : isLoc ? {Lat: p.lat, Lon: p.lng, Distance: 3} : {CityId: p};
+            : 'http://114.215.174.204:8080/xunwei/main?InterfaceId=ShopAction&MethodId=queryByLatLon',
+        c = self.getCityByName(me.curCity.name),
+        d = $.extend({Lat: p.lat, Lon: p.lng}, kw ? {TitleLike: kw} : {Distance: 5, CityId: c && c.areaId});
     $.getJSON(url, d, function (d) {
         d = d || [], self.resClone = d, self.showRes(d);
     });
@@ -43,7 +40,7 @@ Controller.prototype.search = function (key) {
     return this.getRes(key || !window.myLocMark ? myCityId : myLocMark.position, key);
 };
 Controller.prototype.sort = function (t, desc) {
-    var fn = t == 'dis' ? this.fn : function (s1, s2) {
+    var fn = t == 'dis' ? this._defFn : function (s1, s2) {
         return s1.spend - s2.spend;
     };
     if (desc) {
@@ -61,7 +58,7 @@ Controller.prototype.loadNews = function (reload, kw) {
     this.newsLoading = true , $.getJSON(url, {
         MethodId: kw ? 'queryNewsByTitleLike' : 'queryAllNews', offset: start, limit: size, TitleLike: kw
     }, function (data) {
-        var li = self.newsTmpl = self.newsTmpl || $(".news .list>li:first").prop('outerHTML'), p = $(".news .list");
+        var li = self.newsTmpl = self.newsTmpl || $(".news .list>script.tmpl").html(), p = $(".news .list");
         self.complete = true;
         if (reload) p.empty();
         if (!data) return;
@@ -102,10 +99,24 @@ Controller.prototype.init = function () {
         self.getRes(p);
     };
     window.cityChange = function (city) {
-        console.log(city)
-        self.getRes(city);
+        //self.getRes(city);
+        setTimeout(function cg() {
+            if (!self.cities) return setTimeout(cg, 200);
+            var p = me.curCity = self.getCity(city), loc = myCurLoc = me.isInMyCity() && window.myLoc ? myLoc : p.latLng;
+            showPosition(loc), changeState('');
+        }, 200);
     };
     $(function () {
+        qq.maps.event.addListener(map, 'click', function (e) {
+            showPosition(e.latLng);
+        });
+        getLocation();
+        var cs = new qq.maps.CityService();
+        cs.setComplete(function (r) {
+            me.curCity = me.city = $.extend(me.city, r.detail), me.isInMyCity = function () {return !!me.curCity && me.city.name == me.curCity.name;};
+            showPosition(myCurLoc = me.city.latLng), sdk.toMyCity(me.city.name);
+        });
+        cs.searchLocalCity();
         $(".news .list").scroll(function () {
             if (this.scrollHeight - $(this).height() - this.scrollTop < 100)
                 self.loadNews();
@@ -113,4 +124,17 @@ Controller.prototype.init = function () {
         self.loadCity().loadNews(true);
     });
     return self;
-}
+};
+Controller.prototype.getCity = function (cId) {
+    if (!this.cities) return null;
+    var p = null;
+    for (var i = 0; i < this.cities.length; i++) if (this.cities[i].areaId == cId) p = this.cities[i];
+    return $.extend(p, {latLng: new qq.maps.LatLng(p.lat, p.lon)});
+};
+Controller.prototype.getCityByName = function (cName) {
+    if (!this.cities) return null;
+    var p = null;
+    for (var i = 0; i < this.cities.length; i++) if (this.cities[i].name == cName) p = this.cities[i];
+    return $.extend(p, {latLng: new qq.maps.LatLng(p.lat, p.lon)});
+};
+//myLoc = new qq.maps.LatLng(39.91545763858768, 116.40220642089844);

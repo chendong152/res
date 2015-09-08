@@ -11,6 +11,9 @@ function fire(fn) {
     window[fn] && window[fn].apply(this, ag);
 }
 
+/**
+ * 会触发事件 * @param latlng
+ */
 function showPosition(latlng) {
     window.myLocMark ? window.myLocMark.setPosition(latlng) : window.myLocMark = new qq.maps.Marker({
         map: map, position: latlng
@@ -55,15 +58,5 @@ $(function () {
     setTimeout(function () {
         $("#map-container>div:first>div:first").siblings().remove();
     }, 1000);
-    qq.maps.event.addListener(map, 'click', function (e) {
-        showPosition(e.latLng);
-    });
-    getLocation();
-    var cs = new qq.maps.CityService();
-    cs.setComplete(function (r) {
-        me.city = $.extend(me.city, r.detail);
-        sdk.toMyCity(me.city.name) && !window.myLoc && fire('locChange', me.city.latLng);
-    });
-    cs.searchLocalCity();
 })
 
