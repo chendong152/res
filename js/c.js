@@ -27,7 +27,7 @@ Controller.prototype.getRes = function (p, kw) {
             ? 'http://114.215.174.204:8080/xunwei/main?InterfaceId=ShopAction&MethodId=queryByTitleLike'
             : 'http://114.215.174.204:8080/xunwei/main?InterfaceId=ShopAction&MethodId=queryByLatLon',
         c = self.getCityByName(me.curCity.name),
-        d = $.extend({Lat: p.lat, Lon: p.lng}, kw ? {TitleLike: kw} : {Distance: 5, CityId: c && c.areaId});
+        d = $.extend({Lat: p.lat, Lon: p.lng}, kw ? {TitleLike: kw, CityId: c && c.areaId} : {Distance: 5});
     $.getJSON(url, d, function (d) {
         d = d || [], self.resClone = d, self.showRes(d);
     });
