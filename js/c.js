@@ -124,7 +124,7 @@ Controller.prototype.init = function () {
         cs.searchLocalCity();
         $(".news .list").scroll(function () {
             if (this.scrollHeight - $(this).height() - this.scrollTop < 100)
-                self.loadNews(false, self.newsKw), console.log(self.newsKw);
+                self.loadNews(false, self.newsKw);
         });
         self.loadCity().loadNews(true);
     });

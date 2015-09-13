@@ -17,7 +17,7 @@
     <script type="text/javascript" src="js/bh.js"></script>
     <script type="text/javascript" src="js/c.js"></script>
     <script type="text/javascript" src="js/b.js"></script>
-    <base target="detail"/>
+
     <title>天下美食</title>
 </head>
 <body>
@@ -74,7 +74,7 @@
             <div class="swiper-slide rets">
                 <ul class="list">
                     <script class="tmpl" type="text/html">
-                        <li class="item" href="{contentURL}">
+                        <li class="item" href="#{contentURL}">
                             <img class="thumb" src="{titlePic}"/>
 
                             <div class="mask one"></div>
@@ -118,12 +118,12 @@
                         });
                         $(function () {
                             $(".rets .list").delegate('li', 'click', function () {
-                                ($("#resAssis").length > 0 ? $("#resAssis") : $("<a id='resAssis' target='_top' style='display:none;'>").appendTo($(document.body)))
+                                ($("#resAssis").length > 0 ? $("#resAssis") : $("<a id='resAssis' style='display:none;'>").appendTo($(document.body)))
                                         .attr("href", $(this).attr("href"))[0].click();
                             })
                             $('.swiper-container').height($(window).height() - $('header').height());
-                            $('.news .list,.rets .list').scroll(function(){
-                                document.cookie=($(this).parent().hasClass('news')?'news':'res')+'Top='+$(this).scrollTop();
+                            $('.news .list,.rets .list').scroll(function () {
+                                document.cookie = ($(this).parent().hasClass('news') ? 'news' : 'res') + 'Top=' + $(this).scrollTop();
                             })
                         });
                     </script>
@@ -134,7 +134,7 @@
                 <ul class="list">
                     <script class="tmpl" type="text/html">
                         <li>
-                            <a href="{uRL}" data-id="{id}">
+                            <a href="#{uRL}" data-id="{id}">
                                 <img class="thumb" src="{titlePic}"/>
 
                                 <span class="title">{title}</span>
@@ -171,27 +171,43 @@
                     var arr = ['输入商户名、地点', '输入关键字搜索'];
                     swiper['kw' + swiper.previousIndex] = $('.search').val();
                     $('.search').attr('placeholder', arr[swiper.activeIndex]).val(swiper['kw' + swiper.activeIndex] || '');
-                    document.cookie='activeIndex='+swiper.activeIndex;
+                    document.cookie = 'activeIndex=' + swiper.activeIndex;
                 }
             });
-            var m=document.cookie.match(/activeIndex=\d+/);
-            m&&s1.slideTo(parseInt(m[0].match(/\d+/)));
+            var m = document.cookie.match(/activeIndex=\d+/);
+            m && s1.slideTo(parseInt(m[0].match(/\d+/)));
         </script>
     </div>
 </div>
 
 <div class="ic">
-    <iframe id="detail" name="detail">
-    </iframe>
+    <!--iframe id="detail" name="detail">
+    </iframe-->
     <div class="frm-tool">
-        <a class="btn">返回</a>
+        <a class="btn no">返回</a>
     </div>
     <script type="text/javascript">
+        if(navigator.userAgent.match(/iphone|ipad/i)){
+            var s=document.createElement('style');
+            s.innerHTML=('.ic{-webkit-overflow-scrolling: touch;overflow-y: scroll;}');
+            document.body.appendChild(s);
+        }
+        onhashchange = function h(e) {
+            var u = location.hash.replace('#', '');
+            if (u) {
+                $(".ic").show().append($("<iframe id='detail' src='" + u + "'>"));
+            } else {
+                $(".ic").hide().find("#detail").remove();
+            }
+        }
+        $(document).delegate('a:not([class*=no])', 'click', function () {
+
+        })
         $('.frm-tool').click(function () {
             $(".ic").hide();
         });
         $("#detail").load(function () {
-            $(".ic").toggle();
+            //$(".ic").toggle();
         });
     </script>
 </div>
