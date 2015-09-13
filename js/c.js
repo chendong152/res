@@ -19,6 +19,8 @@ Controller.prototype.showRes = function (ls) {
         $(replace(li, ls[i])).appendTo($(frag));
     }
     p[0].appendChild(frag);
+    var m = document.cookie.match(/resTop=\d+/ig);
+    m && $('.rets .list').scrollTop(m[0].match(/\d+/));
     return this;
 }
 Controller.prototype.getRes = function (p, kw) {
@@ -54,7 +56,7 @@ Controller.prototype.sort = function (t, desc) {
 Controller.prototype.loadNews = function (reload, kw) {
     if (this.newsLoading || (this.complete && !reload)) return this;
     var size = 20, start = this.start = reload ? 0 : ( this.start || 0), self = this,
-        url = 'http://114.215.174.204:8080/xunwei/main?InterfaceId=WeixinNewsAction';
+        url = 'http://114.215.174.204:8080/xunwei/main?InterfaceId=AutoArticleAction';
     this.newsLoading = true , $.getJSON(url, {
         MethodId: kw ? 'queryNewsByTitleLike' : 'queryAllNews', offset: start, limit: size, TitleLike: kw
     }, function (data) {
@@ -67,9 +69,10 @@ Controller.prototype.loadNews = function (reload, kw) {
         if (data.total > self.start + size) {
             self.start += size, self.complete = false;
         }
-        self.newsLoading = false;
+        var m = document.cookie.match(/newsTop=\d+/ig);
+        self.newsLoading = false, m && $('.news .list').scrollTop(m[0].match(/\d+/));
     });
-    return this;
+    return this.newsKw = kw, this;
 };
 Controller.prototype.searchNews = function (key) {
     return this.loadNews(true, key);
@@ -113,13 +116,15 @@ Controller.prototype.init = function () {
         getLocation();
         var cs = new qq.maps.CityService();
         cs.setComplete(function (r) {
-            me.curCity = me.city = $.extend(me.city, r.detail), me.isInMyCity = function () {return !!me.curCity && me.city.name == me.curCity.name;};
+            me.curCity = me.city = $.extend(me.city, r.detail), me.isInMyCity = function () {
+                return !!me.curCity && me.city.name == me.curCity.name;
+            };
             showPosition(myCurLoc = me.city.latLng), sdk.toMyCity(me.city.name);
         });
         cs.searchLocalCity();
         $(".news .list").scroll(function () {
             if (this.scrollHeight - $(this).height() - this.scrollTop < 100)
-                self.loadNews();
+                self.loadNews(false, self.newsKw), console.log(self.newsKw);
         });
         self.loadCity().loadNews(true);
     });

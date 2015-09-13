@@ -97,7 +97,7 @@
                         <script>
                             function toMyLoc() {
                                 //你目前不在XX城市内
-                                me.isInMyCity() ? getLocation() : alert(replace('你目前不在{name}城市内', {name: me.city.name}));
+                                me.isInMyCity() ? getLocation() : alert(replace('你目前不在{name}城市内', {name: me.curCity.name}));
                             }
                             function changeState(s) {
                                 $("#mapc").removeClass("s2").removeClass("min").addClass(s);
@@ -122,6 +122,9 @@
                                         .attr("href", $(this).attr("href"))[0].click();
                             })
                             $('.swiper-container').height($(window).height() - $('header').height());
+                            $('.news .list,.rets .list').scroll(function(){
+                                document.cookie=($(this).parent().hasClass('news')?'news':'res')+'Top='+$(this).scrollTop();
+                            })
                         });
                     </script>
                 </div>
@@ -132,7 +135,7 @@
                     <script class="tmpl" type="text/html">
                         <li>
                             <a href="{uRL}" data-id="{id}">
-                                <img class="thumb" src="img/demo.png"/>
+                                <img class="thumb" src="{titlePic}"/>
 
                                 <span class="title">{title}</span>
                                 <span class="time">{creatDate}</span>
@@ -168,8 +171,11 @@
                     var arr = ['输入商户名、地点', '输入关键字搜索'];
                     swiper['kw' + swiper.previousIndex] = $('.search').val();
                     $('.search').attr('placeholder', arr[swiper.activeIndex]).val(swiper['kw' + swiper.activeIndex] || '');
+                    document.cookie='activeIndex='+swiper.activeIndex;
                 }
             });
+            var m=document.cookie.match(/activeIndex=\d+/);
+            m&&s1.slideTo(parseInt(m[0].match(/\d+/)));
         </script>
     </div>
 </div>
@@ -182,13 +188,9 @@
     </div>
     <script type="text/javascript">
         $('.frm-tool').click(function () {
-            //$("#detail").removeClass('show');
-            // $('.frm-tool').hide();
             $(".ic").hide();
         });
         $("#detail").load(function () {
-            // $('.frm-tool').show();
-            // $(this).addClass('show').show(100);
             $(".ic").toggle();
         });
     </script>
