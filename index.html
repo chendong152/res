@@ -156,7 +156,7 @@
                             <a href="#{uRL}" data-id="{id}">
                                 <img class="thumb" src="{titlePic}"/>
 
-                                <span class="title ani-al">{title}</span>
+                                <span class="title"><span class=" ani-al">{title}</span></span>
                                 <span class="intro">{intro}</span>
                                 <span class="time">{creatDate}</span>
                                 <span class="count">{readTimes}</span>
@@ -182,6 +182,7 @@
                         background: url(img/news_title_bg.png);
                         background-size: 100% 100%;
                         position: relative; }
+                    .news .list li .title span{width: 100%; box-sizing: border-box; overflow: hidden; white-space: nowrap; -ms-text-overflow: ellipsis; text-overflow: ellipsis;}
                     .news .list li .intro { margin-left: 1em; width: 65%; float: left; margin-top: .25em; font-size: .8em; line-height: 1.1em; height: 2.2em; overflow: hidden; }
                     .news .list li .time { margin-right: 1em; float: right; }
                     .news .list li .count { margin-right: 1em; padding-left: 1.5em; background: url("img/m.png") left center no-repeat; -webkit-background-size: 1.3em; background-size: 1.3em; float: right; }
