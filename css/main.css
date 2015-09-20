@@ -28,8 +28,8 @@ header .holder { height: .6em; }
 .citys .ct:first-child::before { content: "["; }
 .citys .ct:first-child::after { content: "]"; }
 .citys .ct:last-of-type::after { content: " "; clear: both; }
-.citys .ct:last-child { background-image: none; font-size: .65em;height: 3em; line-height: normal; }
-.search { margin-left: .5em; width: 50%; box-sizing: border-box; padding: .3em .3em .3em 2.5em;
+.citys .ct:last-child { background-image: none; font-size: .65em; height: 3em; line-height: normal; }
+.search { margin-left: .5em; width: 50%; box-sizing: border-box; padding: .5em .5em .5em 2.5em;
     background: #800000 url("../img/search.png") no-repeat 1em center;
     background-size: 1.2em; border-radius: 3px; border: none;
 }
@@ -40,7 +40,7 @@ header .holder { height: .6em; }
 .sort.show > span { display: none; }
 .sort ul li { padding-bottom: 1em; background: url("../img/sort_spit.png") 0 75% no-repeat; background-size: 100% auto; }
 .sort ul li.active { color: gray; }
-.sort ul li:last-child { padding-bottom: .2em;background-image: none; }
+.sort ul li:last-child { padding-bottom: .2em; background-image: none; }
 .main { height: 100%; overflow: hidden auto; }
 .main .header-holder { height: 3em; }
 .swiper-container { width: 100%; height: 92%; }
@@ -73,21 +73,21 @@ header .holder { height: .6em; }
 .main .rets .my-loc .d { width: 50%; display: inline-block; line-height: 2.5em; white-space: nowrap;
     overflow: hidden; text-overflow: ellipsis; }
 .main .rets .my-loc .arrow { width: 1em; height: 100%; background: url("../img/arr_right.png") center no-repeat; background-size: 100% auto; margin-right: .3em; }
-.main .rets .my-loc a { height: 1.3em; margin-right: .8em; margin-top: .7em; color: white; z-index: 100; background: url(../img/map_btn2.png) no-repeat; width: 2.5em; background-size: 100% 100%; }
+.main .rets .my-loc a { height: 1.5em; width: 2.83em; margin-right: .75em; margin-top: .7em; color: white; z-index: 100; background: url(../img/map_btn2.png) no-repeat; background-size: 100% 100%; }
 .main .rets .map { width: 100%; height: 60%; position: absolute; right: 0; bottom: 0; z-index: 5; }
 .main .rets .map > .wrapper { width: 100%; height: 100%; }
 .main .rets .my-addr { background: url('../img/txt_pos_bg.png'); background-size: 100% 100%; }
 .main .rets .switch { width: 2.2em; height: 1.2em; position: fixed; right: 0.5em; bottom: .5em; z-index: 5; }
 .map { }
 .map .to-my-loc { position: absolute; bottom: .5em; left: 1em; width: 2em; height: 2em; background: url("../img/local.png") center no-repeat; background-size: 100% 100%; z-index: 8; }
-.map .my-addr { position: absolute; line-height: 2em; width: 60%; height: 2em; overflow: hidden; z-index: 10; color: blue;
+.map .my-addr { position: absolute; line-height: 2em; width: 55%; height: 2em; overflow: hidden; z-index: 10; color: blue;
     -ms-text-overflow: ellipsis; text-overflow: ellipsis; margin-left: 20%; bottom: .5em; text-align: center;
 }
-.map .small { background: url("../img/map_btn3.png") center no-repeat; background-size: 100% 100%; z-index: 2; position: absolute; right: .1em; bottom: .5em; width: 4em; height: 1.3em; line-height: 1.6em; text-align: center; color: white; }
+.map .small { background: url("../img/map_btn3.png") center no-repeat; background-size: 100% 100%; z-index: 2; position: absolute; right: .1em; bottom: .5em; width: 5em; height: 1.45em; text-align: center; color: white; }
 .map.min .small { background-image: url("../img/map_btn1.png"); }
 .map .my-loc { display: none; z-index: 3; }
 .main .rets .map.min { height: auto; }
-.map.min .small { display: block; position: absolute; right: 0%; bottom: 0; height: 3em; width: 2.82em; padding-top: 1em; }
+.map.min .small { display: block; position: absolute; right: 0%; bottom: 0; height: 3em; width: 2.64em; padding: 0em; }
 .map.min .wrapper { display: none; }
 .map.min .my-loc { display: none; }
 .map.min .to-my-loc { display: none; }
@@ -97,8 +97,7 @@ header .holder { height: .6em; }
 .map.s2 .small { display: none; }
 .map.s2 .wrapper { display: none; }
 .map.s2 .my-loc { display: block; }
-.img-to-right{width: 3em; display: none; position: fixed;right: 0;top:40%;}
-.swiper-slide-active .img-to-right{ display: block;}
-
-.img-to-left{width: 3em; display: none; position: fixed;left: 0;top:40%;}
-.swiper-slide-active .img-to-left{ display: block;}
+.img-to-right { width: 3em; display: none; position: fixed; right: 0; top: 40%; }
+.swiper-slide-active .img-to-right { display: block; }
+.img-to-left { width: 3em; display: none; position: fixed; left: 0; top: 40%; }
+.swiper-slide-active .img-to-left { display: block; }

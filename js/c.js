@@ -122,7 +122,7 @@ Controller.prototype.init = function () {
             me.curCity = me.city = $.extend(me.city, r.detail), me.isInMyCity = function () {
                 return !!me.curCity && me.city.name == me.curCity.name;
             };
-            showPosition(myCurLoc = me.city.latLng), sdk.toMyCity(me.city.name);
+            !window.myLoc && showPosition(myCurLoc = me.city.latLng), sdk.toMyCity(me.city.name);
         });
         cs.searchLocalCity();
         $(".news .list").scroll(function () {
