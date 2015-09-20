@@ -6,6 +6,11 @@ iframe { width: 100%; height: 100%; border: none; margin: 0; padding: 0; overflo
 @media screen and  (width: 320px) {
     body { font-size: .8em; }
 }
+@keyframes al {
+    0% { opacity: 0 } 50%{opacity: 1;}
+    100% { opacity: 0 }
+}
+.ani-al { -webkit-animation: al 3s infinite; -o-animation: al 3s infinite; animation: al 3s infinite; }
 * { -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
 ul:empty { position: relative; }
 ul:empty::after { content: " 没有数据..."; position: absolute; top: 20%; width: 100%; text-align: center; margin-right: -3em; /*margin-top: -.5em;*/ }
@@ -33,7 +38,7 @@ header .holder { height: .6em; }
     background: #800000 url("../img/search.png") no-repeat 1em center;
     background-size: 1.2em; border-radius: 3px; border: none;
 }
-.sort { color: white; float: right; margin-top: .3em; line-height: 1em; height: 1em; overflow: hidden;; vertical-align: bottom; font-size: .9em; width: 4.5em; padding-right: 1.5em; background: url("../img/arr-down.png") 82% center no-repeat; background-size: auto 0.8em; }
+.sort { color: white; float: right; margin-top: .5em; line-height: 1em; height: 1em; overflow: hidden;; vertical-align: bottom; font-size: .9em; width: 4.5em; padding-right: 1.5em; background: url("../img/arr-down.png") 82% center no-repeat; background-size: auto 0.8em; }
 .sort.show { overflow: visible; position: fixed; z-index: 100; right: .1em; top: .5em; background-position-x: 88%; }
 .sort ul { list-style: none; margin: 0; padding: 0; display: none; }
 .sort.show ul { background-color: #800000; padding: .2em; display: block; }

@@ -32,7 +32,7 @@
         <span class="ct" data-id="3">深圳</span>
         <span class="ct" data-id="4">广州</span>
     </div>
-    <input class="search" placeholder="输入商户名、地点"/>
+    <input type="search" class="search" placeholder="输入商户名、地点"/>
     <span class="sort">
         <span>离我最近</span>
         <ul>
@@ -60,10 +60,16 @@
             $('.city').data('id', myCityId = $(this).data('id')).text('[' + $(this).text().replace(/市$/, '') + ']'), fire('cityChange', $(this).data('id'));
             $(".search").val('');
         });
+        function srch(e, b) {
+            !b && $(this).blur();
+            sdk[s1.activeIndex == 0 ? 'search' : 'searchNews']($(this).val()), changeState('s2'), $(".news .list").scrollTop(0);
+        }
         $(".search").keydown(function (e) {
             if (e.which == 13) {
-                sdk[s1.activeIndex == 0 ? 'search' : 'searchNews']($(this).blur().val()), changeState('s2'), $(".news .list").scrollTop(0);
+                srch.call(this, e)
             }
+        }).blur(function (e) {
+            srch.call(this, e, true)
         })
     </script>
 </header>
@@ -133,10 +139,10 @@
                         });
                         $(document).bind('touchstart', function () {
                             var ar = ['.img-to-right', '.img-to-left'];
-                            $(ar[s1.activeIndex]).show(), $(ar[(s1.activeIndex + 1) % 2]).hide();
-                        }).bind('touchend', function () {
+                            //$(ar[s1.activeIndex]).show(), $(ar[(s1.activeIndex + 1) % 2]).hide();
+                        }).bind('touchend', function (e) {
                             var ar = ['.img-to-right', '.img-to-left'];
-                            $(ar[s1.activeIndex]).hide();
+                            //$(ar[s1.activeIndex]).hide();document.title= e.timeStamp;
                         });
                     </script>
                 </div>
@@ -150,7 +156,7 @@
                             <a href="#{uRL}" data-id="{id}">
                                 <img class="thumb" src="{titlePic}"/>
 
-                                <span class="title">{title}</span>
+                                <span class="title ani-al">{title}</span>
                                 <span class="intro">{intro}</span>
                                 <span class="time">{creatDate}</span>
                                 <span class="count">{readTimes}</span>
