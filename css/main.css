@@ -6,8 +6,14 @@ iframe { width: 100%; height: 100%; border: none; margin: 0; padding: 0; overflo
 @media screen and  (width: 320px) {
     body { font-size: .8em; }
 }
+@-webkit-keyframes  al{
+    0% { opacity: 0 }
+    50% { opacity: 1; }
+    100% { opacity: 0 }
+}
 @keyframes al {
-    0% { opacity: 0 } 50%{opacity: 1;}
+    0% { opacity: 0 }
+    50% { opacity: 1; }
     100% { opacity: 0 }
 }
 .ani-al { -webkit-animation: al 3s infinite; -o-animation: al 3s infinite; animation: al 3s infinite; }
@@ -107,3 +113,4 @@ header .holder { height: .6em; }
 .swiper-slide-active .img-to-right { display: block; }
 .img-to-left { width: 3em; display: none; position: fixed; left: 0; top: 40%; }
 .swiper-slide-active .img-to-left { display: block; }
+.intro, .title { line-height: 1.15em; }
