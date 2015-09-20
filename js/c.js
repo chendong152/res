@@ -81,8 +81,11 @@ Controller.prototype.loadCity = function () {
     var self = this, p = $("header .citys"), tmpl = self.ctTmpl = self.ctTmpl || p.find(">.ct:first").prop('outerHTML'),
         url = "http://114.215.174.204:8080/xunwei/main?InterfaceId=AreaAction&MethodId=queryAllCity";
     $.getJSON(url, function (r) {
-        p.empty(), (self.cities = r).forEach(function (d, i) {
-            p.append($(replace(tmpl, d)))
+        p.empty(), items = (self.cities = r).slice(0), items.push({
+            areaId: 0,
+            name: '即将上线<br/>更多城市市'
+        }), items.forEach(function (d, i) {
+            d = $.extend({}, d), d.name = d.name.replace('市', ''), p.append($(replace(tmpl, d)))
         });//, $('header .city').data('id', r[0].id).text('[' + r[0].name.replace(/.$/, '') + ']');
         self.toMyCity();
     });
@@ -90,9 +93,9 @@ Controller.prototype.loadCity = function () {
 };
 Controller.prototype.toMyCity = function (ct) {
     if (!this.cities || !me.city)return this;
-    this.cities.forEach(function (c) {
+    this.cities.forEach(function (c, i) {
         if (c.name.match(new RegExp(ct || me.city.name, 'ig')))
-            $('header .city').data('id', myCityId = c.areaId).text('[' + c.name.replace(/.$/, '') + ']')
+            $('header .city').data('id', myCityId = c.areaId).text('[' + c.name.replace(/.$/, '') + ']'), $(".citys .ct:eq(" + i + ")").addClass("active")
     })
     return this;
 };
@@ -139,7 +142,7 @@ Controller.prototype.getCity = function (cId) {
 Controller.prototype.getCityByName = function (cName) {
     if (!this.cities) return null;
     var p = null;
-    for (var i = 0; i < this.cities.length; i++) if (this.cities[i].name == cName) p = this.cities[i];
+    for (var i = 0; i < this.cities.length; i++) if (cName.indexOf(this.cities[i].name) > -1) p = this.cities[i];
     return $.extend(p, {latLng: new qq.maps.LatLng(p.lat, p.lon)});
 };
 //myLoc = new qq.maps.LatLng(39.91545763858768, 116.40220642089844);

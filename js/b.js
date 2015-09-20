@@ -49,7 +49,7 @@ function getAddress() {
     window.myLocMark && getAddr(myLocMark.getPosition(), function (r) {
         var d = r.detail, c = d.addressComponents, p = c.country + c.province + (c.province == c.city ? '' : c.city);
         // $(".my-addr").text(c.district + (c.streetNumber || c.town))
-        $(".my-addr").text(d.address.replace(p, ''))
+        $(".my-addr").text('当前:'+d.address.replace(p, ''))
     });
 }
 

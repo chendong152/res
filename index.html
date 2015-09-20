@@ -55,7 +55,8 @@
         });
         $(".citys").delegate('.ct', 'click', function () {
             $(".citys").hide();
-            if ($('.city').data('id') == $(this).data('id')) return;
+            if ($('.city').data('id') == $(this).data('id') || $(this).data('id') == 0) return;
+            $('.citys .ct').removeClass('active'), $(this).addClass('active');
             $('.city').data('id', myCityId = $(this).data('id')).text('[' + $(this).text().replace(/市$/, '') + ']'), fire('cityChange', $(this).data('id'));
             $(".search").val('');
         });
@@ -72,16 +73,16 @@
         <div class="swiper-pagination" style="top: 0; bottom: auto;"></div>
         <div class="swiper-wrapper" style=" top: 4%; height: 96%;">
             <div class="swiper-slide rets">
+                <img class="img-to-right" src="img/page_to_right.png">
                 <ul class="list">
                     <script class="tmpl" type="text/html">
                         <li class="item" href="#{contentURL}">
                             <img class="thumb" src="{titlePic}"/>
 
                             <div class="mask one"></div>
-                            <div class="mask two"></div>
                             <div class="distance fr pt">{distance}km</div>
                             <div class="title pr pt">{title}</div>
-                            <div class="intro pr">{intro}</div>
+                            <div class="intro pr">{reCommendFood}</div>
                             <div class="price fr">￥<span class="digit">{spend}</span>/人
                             </div>
                         </li>
@@ -101,11 +102,14 @@
                             }
                             function changeState(s) {
                                 $("#mapc").removeClass("s2").removeClass("min").addClass(s);
+                                if (!s && !document.cookie.match(/\btiped=\w+/)) {
+                                    document.cookie = 'tiped=true', alert('点击地图设置新位置');
+                                }
                             }
                         </script>
                     </div>
                     <div id="map-container" class="wrapper"></div>
-                    <label class="d my-addr mask">当前：不能定位</label>
+                    <label class="d my-addr">当前：不能定位</label>
                     <script type="text/javascript">
                         $("#mapc .wrapper").bind("touchstart", function (e) {
                             e.stopPropagation();
@@ -131,6 +135,7 @@
 
             </div>
             <div class="swiper-slide news">
+                <img class="img-to-left" src="img/page_to_left.png">
                 <ul class="list">
                     <script class="tmpl" type="text/html">
                         <li>
@@ -138,6 +143,7 @@
                                 <img class="thumb" src="{titlePic}"/>
 
                                 <span class="title">{title}</span>
+                                <span class="intro">{intro}</span>
                                 <span class="time">{creatDate}</span>
                                 <span class="count">{readTimes}</span>
 
@@ -152,7 +158,15 @@
                     .news .list li { background: url("img/bg.png") center bottom no-repeat; background-size: 100% auto; padding: 1em 0; }
                     .news .list li:first-child { padding-top: 0; }
                     .news .list li .thumb { width: 100%; }
-                    .news .list li .title { margin-left: 1em; width: 65%; float: left; }
+                    .news .list li .title { padding-left: 1em;
+                        width: 100%;box-sizing: border-box;overflow: hidden;white-space: nowrap; -ms-text-overflow: ellipsis; text-overflow: ellipsis;
+                        float: left;
+                        margin-top: -1.6em;
+                        line-height: 1.5em;
+                        background: url(img/news_title_bg.png);
+                        background-size: 100% 100%;
+                        position: relative; }
+                    .news .list li .intro { margin-left: 1em; width: 65%; float: left; }
                     .news .list li .time { margin-right: 1em; float: right; }
                     .news .list li .count { margin-right: 1em; padding-left: 1.5em; background: url("img/m.png") left center no-repeat; -webkit-background-size: 1.3em; background-size: 1.3em; float: right; }
                     .swiper-pagination-bullet { width: 6px; height: 6px; border: 2px solid red; background-color: white; }
@@ -168,10 +182,10 @@
             s1 = new Swiper('#s1', {
                 direction: 'horizontal', loop: false, pagination: '.swiper-pagination',
                 onSlideChangeEnd: function (swiper) {
-                    var arr = ['输入商户名、地点', '输入关键字搜索'];
-                    swiper['kw' + swiper.previousIndex] = $('.search').val();
-                    $('.search').attr('placeholder', arr[swiper.activeIndex]).val(swiper['kw' + swiper.activeIndex] || '');
-                    document.cookie = 'activeIndex=' + swiper.activeIndex;
+                    var arr = ['输入商户名、地点', '输入专栏关键字查询'], fns = ['show', 'hide'], ai = swiper.activeIndex;
+                    $("header>.sort")[fns[ai]](), $('.search').attr('placeholder', arr[ai]).val(swiper['kw' + swiper.ai] || ''),
+                            swiper['kw' + swiper.previousIndex] = $('.search').val();
+                    document.cookie = 'activeIndex=' + ai;
                 }
             });
             var m = document.cookie.match(/activeIndex=\d+/);
@@ -187,11 +201,6 @@
         <a class="btn no">返回</a>
     </div>
     <script type="text/javascript">
-        if(navigator.userAgent.match(/iphone|ipad/i)){
-            var s=document.createElement('style');
-            s.innerHTML=('.ic{-webkit-overflow-scrolling: touch;overflow-y: scroll;}');
-            document.body.appendChild(s);
-        }
         onhashchange = function h(e) {
             var u = location.hash.replace('#', '');
             if (u) {
@@ -200,9 +209,11 @@
                 $(".ic").hide().find("#detail").remove();
             }
         }
-        $(document).delegate('a:not([class*=no])', 'click', function () {
-
-        })
+        if (navigator.userAgent.match(/iphone|ipad/i)) {
+            var s = document.createElement('style');
+            s.innerHTML = ('.ic{-webkit-overflow-scrolling: touch;overflow-y: scroll;}');
+            document.body.appendChild(s);
+        }
         $('.frm-tool').click(function () {
             $(".ic").hide();
         });
