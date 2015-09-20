@@ -19,8 +19,8 @@ Controller.prototype.showRes = function (ls) {
         $(replace(li, ls[i])).appendTo($(frag));
     }
     p[0].appendChild(frag);
-    var m = document.cookie.match(/resTop=\d+/ig);
-    m && $('.rets .list').scrollTop(m[0].match(/\d+/));
+    //var m = document.cookie.match(/resTop=\d+/ig);
+    //m && $('.rets .list').scrollTop(m[0].match(/\d+/));
     return this;
 }
 Controller.prototype.getRes = function (p, kw) {
@@ -70,7 +70,7 @@ Controller.prototype.loadNews = function (reload, kw) {
             self.start += size, self.complete = false;
         }
         var m = document.cookie.match(/newsTop=\d+/ig);
-        self.newsLoading = false, m && $('.news .list').scrollTop(m[0].match(/\d+/));
+        self.newsLoading = false/*, m && $('.news .list').scrollTop(m[0].match(/\d+/))*/;
     });
     return this.newsKw = kw, this;
 };
